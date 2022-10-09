@@ -1,18 +1,18 @@
 <?php
 require_once("../database/connect.php");
 
-$id_usuario = $_GET["id_adm"];
+$id_usuario = substr($_SERVER["PATH_INFO"], 1);
 
-$databaseConnection = connect();
+$databaseConnection = Connect();
 
-$deleteSql = "DELETE FROM usuario WHERE id_adm = ?;";
+$deleteSql = "DELETE FROM adm WHERE id_adm = ?;";
 
 
-$searchStatement = $databaseConnection->prepare($deleteSql);
+$deleteStatement = $databaseConnection->prepare($deleteSql);
 
-$searchStatement = bin_param("i", $id_usuario);
+$deleteStatement->bind_param("i", $id_usuario);
 
-$noErrorOcorred= $searchStatement->execute();
+$noErrorOcorred= $deleteStatement->execute();
 
 if ($noErrorOcorred) {
 

@@ -1,16 +1,18 @@
 <?php
 require_once("../database/connect.php");
 
-$id_usuario = $_GET["id_adm"];
+$id_usuario = substr($_SERVER["PATH_INFO"], 1);
 
-$databaseConnection = connect();
+$databaseConnection = Connect();
 
-$selectSqlEspecificy = "SELECT * FROM usuario WHERE id_adm = ?;";
+$selectSqlEspecificy = "SELECT id_adm, cargo, usuario, IF(adm.id_representante IS NOT NULL, representante.id_turma, NULL) as id_turma 
+                            FROM adm, representante
+                            WHERE id_adm = ? AND (adm.id_representante IS NULL OR adm.id_representante = representante.id_representante);";
 
 
 $searchStatement = $databaseConnection->prepare($selectSqlEspecificy);
 
-$searchStatement = bin_param("i", $id_usuario);
+$searchStatement->bind_param("i", $id_usuario);
 
 $searchStatement->execute();
 
@@ -18,7 +20,7 @@ $searchResult = $searchStatement->get_result();
 
 $response = [];
 
-if ($searchResult->num_rows()) {
+if ($searchResult->num_rows) {
 
     $userData = $searchResult->fetch_assoc();
 
@@ -32,12 +34,13 @@ if ($searchResult->num_rows()) {
         $response["user"]["class"] = $class;
     }
 
-
-    $json = json_encode($response);
-
-    echo $json;
-
     http_response_code(200);
 } else {
-    http_response_code(500);
+    $response["error"] = "User not found";
+    http_response_code(404);
 }
+
+header("Content-Type: application/json");
+$json = json_encode($response);
+
+echo $json;

@@ -17,26 +17,32 @@ $putData = file_get_contents('php://input');
 
 //pegando o corpo do json
 $requestBodyJson = json_decode($putData, true);
+$user = $requestBodyJson["user"];
+
+if($user["role"] != "administrador" && $user["role"] != "representante") {
+    http_response_code(400);
+    exit();
+}
 
 //recebendo a coneão com o banco de dados
-$databaseConnection = connect();
+$databaseConnection = Connect();
 
 //criando sql necessário para alterar os dados
-$updateSql = "UPDATE usuario SET cargo = ?, usuario = ?, senha = ? WHERE id_adm = ?;";
+$updateSql = "UPDATE adm SET cargo = ?, usuario = ?, senha = ? WHERE id_adm = ?;";
 
 //preparando o sql para ser executado
-$searchStatement = $databaseConnection->prepare($updateSql);
+$updateStatement = $databaseConnection->prepare($updateSql);
 
 // executando o sql na query
-$searchStatement = bin_param("ssii", $user["cargo"], $user["usuario"], $user["senha"], $user["id_adm"]);
+$updateStatement->bind_param("sssi", $user["role"], $user["username"], $user["password"], $user["id"]);
 
 //verificando se a query foi bem sucedida
-$noErrorOcorred = $searchStatement->execute();
+$noErrorOcorred = $updateStatement->execute();
 
 if ($noErrorOcorred) {
     http_response_code(200);
 
-    echo($requestBodyJson);
+    echo json_encode($requestBodyJson);
     
 } else {
     http_response_code(500);
