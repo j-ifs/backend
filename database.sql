@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `jogador_modalidade` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_jogador` int(11),
   `id_modalidade` int(11),
+  `id_turma` VARCHAR(5),
   PRIMARY KEY (`id`)
 )  ENGINE= INNODB CHARSET=utf8mb4;
 
@@ -125,6 +126,9 @@ ALTER TABLE `jogador_modalidade`
 ADD FOREIGN KEY (`id_modalidade`)
 REFERENCES modalidade(`id_modalidade`);
 
+ALTER TABLE `jogador_modalidade`
+ADD FOREIGN KEY (`id_turma`)
+REFERENCES turma(`id_turma`);
 
 ALTER TABLE `adm`
 ADD FOREIGN KEY (`id_representante`)
