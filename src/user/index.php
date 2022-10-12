@@ -3,9 +3,13 @@ require_once("../database/connect.php");
 
 $databaseConnection = connect();
 
-$selectSql = "SELECT DISTINCT id_adm, cargo, usuario, IF(adm.id_representante IS NOT NULL, representante.id_turma, NULL) as id_turma 
-                FROM adm, representante
-                WHERE (adm.id_representante IS NULL OR adm.id_representante = representante.id_representante);";
+$selectSql = "SELECT id_adm, cargo, usuario, senha, IF (id_representante IS NULL, NULL, (
+                        SELECT representante.id_turma FROM representante 
+                        WHERE representante.id_representante = adm.id_representante
+                        LIMIT 0, 1
+                    )
+                ) AS id_turma
+                FROM adm";
 
 $result = $databaseConnection->query($selectSql);
 
@@ -36,6 +40,7 @@ if ($result) {
     http_response_code(500);
 }
 
+header("Content-Type: application/json");
 echo json_encode($responseBody);
 
 ?>

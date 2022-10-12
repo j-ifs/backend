@@ -7,8 +7,14 @@
     $requestBodyJson = json_decode($postData, true);
     $user = $requestBodyJson["user"]; // Get student data
 
-    $searchSql = "SELECT id_adm, cargo, usuario, senha, IF(adm.id_representante IS NOT NULL, representante.id_turma, NULL) as id_turma FROM adm, representante 
-                    WHERE usuario = ? AND senha = ? AND (adm.id_representante IS NULL OR adm.id_representante = representante.id_representante)";
+    $searchSql = "SELECT id_adm, cargo, usuario, senha, IF (id_representante IS NULL, NULL, (
+                                SELECT representante.id_turma FROM representante 
+                                WHERE representante.id_representante = adm.id_representante
+                                LIMIT 0, 1
+                            )
+                        ) AS id_turma
+                    FROM adm
+                    WHERE usuario = ? AND senha = ?";
 
     $databaseConnection = Connect();
 
