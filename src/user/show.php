@@ -5,9 +5,13 @@ $id_usuario = substr($_SERVER["PATH_INFO"], 1);
 
 $databaseConnection = Connect();
 
-$selectSqlEspecificy = "SELECT id_adm, cargo, usuario, IF(adm.id_representante IS NOT NULL, representante.id_turma, NULL) as id_turma 
-                            FROM adm, representante
-                            WHERE id_adm = ? AND (adm.id_representante IS NULL OR adm.id_representante = representante.id_representante);";
+$selectSqlEspecificy = "SELECT id_adm, cargo, usuario, senha, IF (id_representante IS NULL, NULL, (
+                                SELECT representante.id_turma FROM representante 
+                                WHERE representante.id_representante = adm.id_representante
+                                LIMIT 0, 1
+                            )
+                        ) AS id_turma
+                        FROM adm WHERE id_adm = ?";
 
 
 $searchStatement = $databaseConnection->prepare($selectSqlEspecificy);
