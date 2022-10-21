@@ -1,7 +1,8 @@
 <?php
     require_once("../database/connect.php");
 
-    $searchSql = "SELECT * FROM jogador";
+    $searchSql = "SELECT jogador.*, turma.curso, turma.ano FROM jogador
+                    INNER JOIN turma ON turma.id_turma = jogador.id_turma";
 
     $databaseConnection = Connect();
     $searchResult = $databaseConnection->query($searchSql);
@@ -14,7 +15,11 @@
             "name" => $studentData["nome"],
             "registration" => (int) $studentData["matricula"],
             "birthdate" => $studentData["data_nascimento"],
-            "class" => $studentData["id_turma"]
+            "class" => [
+                "id" => $studentData["id_turma"],
+                "course" => $studentData["curso"],
+                "year" => (int) $studentData["ano"]
+            ]
         ];
     }
 
