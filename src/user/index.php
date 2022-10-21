@@ -3,7 +3,7 @@ require_once("../database/connect.php");
 
 $databaseConnection = connect();
 
-$selectSql = "SELECT id_adm, cargo, usuario, senha, IF (id_representante IS NULL, NULL, (
+$selectSql = "SELECT id_adm, cargo, nome, usuario, senha, IF (id_representante IS NULL, NULL, (
                         SELECT representante.id_turma FROM representante 
                         WHERE representante.id_representante = adm.id_representante
                         LIMIT 0, 1
@@ -22,7 +22,8 @@ if ($result) {
         $user = [
             "id" => (int) $fetch["id_adm"],
             "role" => $fetch["cargo"],
-            "username" => $fetch["usuario"],
+            "name" => $fetch["nome"],
+            "username" => $fetch["usuario"]
         ];
 
         if($class = $fetch["id_turma"]) {
