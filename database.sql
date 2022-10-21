@@ -92,6 +92,7 @@ DROP TABLE IF EXISTS `adm`;
 CREATE TABLE IF NOT EXISTS `adm` (
   `id_adm` int(11) NOT NULL AUTO_INCREMENT,
   `cargo` varchar(20) NOT NULL,
+  `nome` varchar(70) NOT NULL,
   `usuario` varchar(60) NOT NULL,
   `senha` varchar(16) NOT NULL,
   `id_representante` int(11),

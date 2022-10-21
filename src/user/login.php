@@ -7,7 +7,7 @@
     $requestBodyJson = json_decode($postData, true);
     $user = $requestBodyJson["user"]; // Get student data
 
-    $searchSql = "SELECT id_adm, cargo, usuario, senha, IF (id_representante IS NULL, NULL, (
+    $searchSql = "SELECT id_adm, cargo, nome, usuario, senha, IF (id_representante IS NULL, NULL, (
                                 SELECT representante.id_turma FROM representante 
                                 WHERE representante.id_representante = adm.id_representante
                                 LIMIT 0, 1
@@ -35,6 +35,7 @@
         $response["user"] = [
             "id" => $userData["id_adm"],
             "role" => $userData["cargo"],
+            "name" => $userData["nome"],
             "username" => $userData["usuario"]
         ];
 

@@ -49,13 +49,13 @@ if($user["role"] == "representante") {
 }
 
 //criando sql necessário para alterar os dados
-$insertSql = "INSERT INTO adm (cargo, usuario, senha, id_representante) VALUES(?, ?, ?, ?);";
+$insertSql = "INSERT INTO adm (cargo, nome, usuario, senha, id_representante) VALUES(?, ?, ?, ?, ?);";
 
 //preparando o sql para ser executado
 $insertStatement = $databaseConnection->prepare($insertSql);
 
 // executando o sql na query
-$insertStatement->bind_param("sssi", $user["role"], $user["username"], $user["password"], $represetantId);
+$insertStatement->bind_param("ssssi", $user["role"], $user["name"], $user["username"], $user["password"], $represetantId);
 
 //verificando se a query foi bem sucedida
 $noErrorOcorred = $insertStatement->execute();

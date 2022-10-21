@@ -2,6 +2,7 @@
 require_once("../database/connect.php");
 
 //recebendo o json com os dados enviados pelo frontend
+$userId = substr($_SERVER["PATH_INFO"], 1);
 $putData = file_get_contents('php://input');
 
 /** escopo do json
@@ -28,13 +29,13 @@ if($user["role"] != "administrador" && $user["role"] != "representante") {
 $databaseConnection = Connect();
 
 //criando sql necessário para alterar os dados
-$updateSql = "UPDATE adm SET cargo = ?, usuario = ?, senha = ? WHERE id_adm = ?;";
+$updateSql = "UPDATE adm SET cargo = ?, nome = ?, usuario = ?, senha = ? WHERE id_adm = ?;";
 
 //preparando o sql para ser executado
 $updateStatement = $databaseConnection->prepare($updateSql);
 
 // executando o sql na query
-$updateStatement->bind_param("sssi", $user["role"], $user["username"], $user["password"], $user["id"]);
+$updateStatement->bind_param("ssssi", $user["role"], $user["name"], $user["username"], $user["password"], $userId);
 
 //verificando se a query foi bem sucedida
 $noErrorOcorred = $updateStatement->execute();
