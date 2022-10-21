@@ -3,7 +3,9 @@
 
     $studentId = substr($_SERVER["PATH_INFO"], 1);
 
-    $searchSql = "SELECT * FROM jogador WHERE id_jogador = ?";
+    $searchSql = "SELECT jogador.*, turma.curso, turma.ano FROM jogador
+                    INNER JOIN turma ON turma.id_turma = jogador.id_turma
+                    WHERE jogador.id_jogador = ?";
 
     $databaseConnection = Connect();
     $searchStatement = $databaseConnection->prepare($searchSql);
@@ -18,11 +20,15 @@
         $studentData = $searchResult->fetch_assoc();
         
         $responseBody["student"] = [
-            "id" => $studentData["id_jogador"],
+            "id" => (int) $studentData["id_jogador"],
             "name" => $studentData["nome"],
-            "registration" => $studentData["matricula"],
+            "registration" => (int) $studentData["matricula"],
             "birthdate" => $studentData["data_nascimento"],
-            "class" => $studentData["id_turma"]
+            "class" => [
+                "id" => $studentData["id_turma"],
+                "course" => $studentData["curso"],
+                "year" => (int) $studentData["ano"]
+            ]
         ];
     } else {
         $responseBody["error"] = "Student not found";
