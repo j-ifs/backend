@@ -9,7 +9,7 @@
                     jogador.matricula,
                     jogador.data_nascimento, 
                     modalidade.id_modalidade,
-                    modalidade.nome,
+                    modalidade.nome AS nome_modalidade,
                     turma.curso,
                     turma.ano
                 FROM jogador_modalidade
@@ -42,7 +42,7 @@
             ],
             "sport" => [
                 "id" => (int) $subscriptionData["id_modalidade"],
-                "name" => $subscriptionData["nome"]
+                "name" => $subscriptionData["nome_modalidade"]
             ],
             "class" => [
                 "id" => $subscriptionData["id_turma"],
