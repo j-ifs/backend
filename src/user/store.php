@@ -1,5 +1,8 @@
 <?php
+require_once("../auth/Filter.php");
 require_once("../database/connect.php");
+
+Filter\AdminOnly();
 
 //recebendo o json com os dados enviados pelo frontend
 $storeData = file_get_contents('php://input');

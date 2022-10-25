@@ -1,5 +1,8 @@
 <?php
+    require_once("../auth/Filter.php");
     require_once("../database/connect.php");
+
+    Filter\AuthenticatedOnly();
 
     $studentId = substr($_SERVER["PATH_INFO"], 1);
 
