@@ -5,7 +5,7 @@
     Filter\AuthenticatedOnly();
 
     $searchSql = "SELECT jogador_modalidade.*, 
-                            jogador.id_turma, 
+                            jogador.id_turma AS turma_jogador, 
                             jogador.nome, 
                             jogador.matricula,
                             jogador.data_nascimento, 
@@ -31,7 +31,7 @@
                 "name" => $subscriptionData["nome"],
                 "registration" => $subscriptionData["matricula"],
                 "birthdate" => $subscriptionData["data_nascimento"],
-                "class" => $subscriptionData["id_turma"]
+                "class" => $subscriptionData["turma_jogador"]
             ],
             "sport" => [
                 "id" => (int) $subscriptionData["id_modalidade"],
