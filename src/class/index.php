@@ -1,5 +1,8 @@
 <?php
+    require_once("../auth/Filter.php");
     require_once("../database/connect.php");
+
+    Filter\AuthenticatedOnly();
 
     $searchSql= "SELECT * FROM turma";
 

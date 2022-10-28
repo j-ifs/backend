@@ -44,6 +44,7 @@
         }
 
         $_SESSION["user"] = $userData["id_adm"];
+        $_SESSION["role"] = $userData["cargo"];
 
     } else {
         http_response_code(401);

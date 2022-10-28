@@ -1,5 +1,8 @@
 <?php
+    require_once("../auth/Filter.php");
     require_once("../database/connect.php");
+
+    Filter\AuthenticatedOnly();
 
     $searchSql = "SELECT jogador.*, turma.curso, turma.ano FROM jogador
                     INNER JOIN turma ON turma.id_turma = jogador.id_turma";

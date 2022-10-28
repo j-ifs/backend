@@ -1,13 +1,16 @@
 <?php
+    require_once("../auth/Filter.php");
     require_once("../database/connect.php");
 
+    Filter\AuthenticatedOnly();
+
     $searchSql = "SELECT jogador_modalidade.*, 
-                            jogador.id_turma, 
+                            jogador.id_turma AS turma_jogador, 
                             jogador.nome, 
                             jogador.matricula,
                             jogador.data_nascimento, 
                             modalidade.id_modalidade,
-                            modalidade.nome,
+                            modalidade.nome AS nome_modalidade,
                             turma.curso,
                             turma.ano
                     FROM jogador_modalidade
@@ -28,11 +31,11 @@
                 "name" => $subscriptionData["nome"],
                 "registration" => $subscriptionData["matricula"],
                 "birthdate" => $subscriptionData["data_nascimento"],
-                "class" => $subscriptionData["id_turma"]
+                "class" => $subscriptionData["turma_jogador"]
             ],
             "sport" => [
                 "id" => (int) $subscriptionData["id_modalidade"],
-                "name" => $subscriptionData["nome"]
+                "name" => $subscriptionData["nome_modalidade"]
             ],
             "class" => [
                 "id" => $subscriptionData["id_turma"],

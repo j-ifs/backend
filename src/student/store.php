@@ -1,6 +1,8 @@
 <?php
-
+    require_once(__DIR__ . "/../auth/Filter.php");
     require_once(__DIR__ . "/../database/connect.php");
+
+    Filter\AuthenticatedOnly();
 
     // Get post data
     $postData = file_get_contents('php://input');

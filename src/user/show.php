@@ -1,5 +1,8 @@
 <?php
+require_once("../auth/Filter.php");
 require_once("../database/connect.php");
+
+Filter\AdminOnly();
 
 $id_usuario = substr($_SERVER["PATH_INFO"], 1);
 

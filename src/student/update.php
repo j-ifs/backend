@@ -1,8 +1,8 @@
 <?php
-
-use function PHPSTORM_META\type;
-
+    require_once(__DIR__ . "/../auth/Filter.php");
     require_once(__DIR__ . "/../database/connect.php");
+
+    Filter\AuthenticatedOnly();
 
     // Get post data
     $putData = file_get_contents('php://input');
